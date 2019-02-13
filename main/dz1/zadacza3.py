@@ -1,7 +1,7 @@
 class FibIterator:
     def __iter__(self):
-        self._prev = 0
-        self._curr = 1
+        self._previous = 0
+        self._current = 1
         self._calls = 0
         return self
 
@@ -14,27 +14,25 @@ class FibIterator:
         if self._calls == 1:
             return 0
 
-        to_return = self._curr
-        self._curr += self._prev
-        self._prev = to_return
+        value = self._current
+        self._current += self._previous
+        self._previous = value
 
-        return to_return
+        return value
 
 
 def fib_generator():
-    prev = 1
-    prevprev = 0
-    curr = 1
+    previous = 0
+    current = 1
     iteration = 0
     while iteration != 100:
         iteration += 1
         if iteration == 1:
             yield 0
         else:
-            yield curr
-            curr = prev + prevprev
-            prevprev = prev
-            prev = curr
+            yield current
+            current, previous = previous, current
+            current += previous
 
 
 def strange_decorator(func):
@@ -42,12 +40,12 @@ def strange_decorator(func):
         if len(args) + len(kwargs) > 10:
             raise ValueError
 
-        for key in kwargs:
-            if isinstance(kwargs[key], bool):
+        for argument in kwargs.items():
+            if isinstance(argument, bool):
                 raise TypeError
 
-        to_return = func(args, kwargs)
+        value = func(args, kwargs)
 
-        return to_return + 13 if isinstance(to_return, int) and not isinstance(to_return, bool) else to_return
+        return value + 13 if isinstance(value, int) and not isinstance(value, bool) else value
 
     return new_func

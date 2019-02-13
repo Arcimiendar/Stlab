@@ -3,7 +3,7 @@ import functools
 
 
 def analyze_students(d: typing.Dict[str, typing.Dict[str, typing.List[int]]]) -> typing.Set[typing.Tuple]:
-    return {(s, u, functools.reduce(lambda a, x: a*x, d[s][u])) for s in d for u in d[s] if u != '1C'}  # зато вместился
+    return {(s, u, functools.reduce(lambda a, x: a*x, d[s][u])) for s in d for u in d[s] if u != '1C'}  # it fits!
 
 
 def validate_data(data: typing.Dict) -> bool:
@@ -12,7 +12,7 @@ def validate_data(data: typing.Dict) -> bool:
             raise TypeError
 
         for subject in data[student]:
-            if not isinstance(student, str):
+            if not isinstance(subject, str):
                 raise TypeError
 
             for note in data[student][subject]:
