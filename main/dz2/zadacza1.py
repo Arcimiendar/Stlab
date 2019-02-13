@@ -10,14 +10,14 @@ class Department:
         self.budget = budget
 
     def get_budget_plan(self) -> int:
-        to_return = self.budget
+        budget_plan = self.budget
         for salary in self.employees.values():
-            to_return -= salary
+            budget_plan -= salary
 
-        if to_return < 0:
+        if budget_plan < 0:
             raise self.BudgetError
 
-        return to_return
+        return budget_plan
 
     @property
     def average_salary(self):
@@ -35,22 +35,22 @@ class Department:
 
         for i in range(len(departments)):
             if not i:
-                temp_dep = departments[0]
+                temp_department = departments[0]
             else:
-                temp_dep = cls.__adding(departments[i], temp_dep)
+                temp_department = cls.__adding(departments[i], temp_department)
 
-        temp_dep.get_budget_plan()
-        return temp_dep
+        temp_department.get_budget_plan()
+        return temp_department
 
     def __gt__(self, other):
-        self_greater = True
+        self_is_greater = True
         if self.average_salary < other.average_salary:
-            self_greater = False
+            self_is_greater = False
         elif self.average_salary == other.average_salary:
             if self.name > other.name:
-                self_greater = False
+                self_is_greater = False
 
-        return self_greater
+        return self_is_greater
 
     @staticmethod
     def __adding(this, other) -> 'Department':
