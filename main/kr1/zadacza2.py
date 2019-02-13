@@ -6,19 +6,19 @@ import openpyxl
 File = typing.TextIO
 
 
-def xlsx_workbook(xlsx_workbook, json_file: File):
+def xlsx_to_json(xlsx_workbook, json_file: File):
 
-    wb = xlsx_workbook
-    sheet = wb[wb.sheetnames[0]]
-    res = dict()
+    workbook = xlsx_workbook
+    sheet = workbook[workbook.sheetnames[0]]
+    further_json = dict()
 
     key = sheet['A1'].value
-    res[key] = dict()
+    further_json[key] = dict()
 
     for row in sheet.rows:
         if row[0].value is not None:
             key = row[0].value
-            res[key] = dict()
-        res[key][row[1].value] = row[2].value
+            further_json[key] = dict()
+        further_json[key][row[1].value] = row[2].value
 
-    json.dump(res, json_file)
+    json.dump(further_json, json_file)
