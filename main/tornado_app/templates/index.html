@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>(∩^o^)⊃━☆ﾟ.*･｡ﾟ authorizing</title>
+</head>
+<body>
+<form method="POST" onsubmit="checkIsNameValid(); return false;" id="form">
+    <label for="name">input your name</label>
+    <input type="text" name="name" id="name">
+    <br>
+    <label for="number">input room number (between 1 and 10)</label>
+    <input type="number" name="number" id="number">
+    <br>
+    <input type="submit" value="submit">
+</form>
+
+<script>
+    function checkIsNameValid() {
+
+        if (document.getElementById("number").value == "") {
+            alert("print room number!");
+            return;
+        }
+
+        if (document.getElementById("name").value == "")
+        {
+            alert("print name!");
+            return;
+        }
+
+        if (document.getElementById("number").value > 10 ||
+            document.getElementById("number").value < 0) {
+            if (!(document.getElementById("number").value == 11 &&
+                document.getElementById("name").value.toLowerCase() == 'admin')) {
+                alert("input room in normal range!");
+                return;
+            }
+        }
+
+        var request = new XMLHttpRequest();
+        request.open("POST", "/");
+
+
+        var params = "name_to_check=" + document.getElementById("name").value +
+                     "&number=" + document.getElementById("number").value;
+
+        request.setRequestHeader("Content-type", 'application/x-www-form-urlencoded');
+        //request.setRequestHeader("Content-length", params.length);
+
+        request.onreadystatechange = function () {
+            if (request.status == 200 && request.readyState == 4) {
+                if (request.responseText != "true") {
+                    alert(request.responseText);
+                }
+                else {
+                    document.getElementById("form").onsubmit = null;
+                    document.getElementById("form").submit();
+                }
+            }
+        };
+        request.send(params);
+    }
+</script>
+</body>
+</html>

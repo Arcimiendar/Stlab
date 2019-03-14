@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ヽ( ͝° ͜ʖ͡°)ﾉ just chatting</title>
+</head>
+<body style="font-size: xx-large">
+
+<div id="online" style="float: right"></div>
+
+<div style="float: left">
+    <div id="messages">
+    </div>
+
+
+    <form onsubmit="send_message(); return false;">
+        <label for="message">type message</label>
+        <input type="text" id="message" name="message">
+        <input type="submit" value="send">
+    </form>
+</div>
+
+<script>
+    var socket = new WebSocket("ws://" + window.location.host + window.location.pathname + 'ws');
+
+
+    socket.onmessage = function (event) {
+        if (event.data == "disconnect") {
+            document.getElementsByTagName("title")[0].innerHTML = "(┛ಠДಠ)┛彡┻━┻ disconnection";
+
+            alert("Room is restarting. You will be redirected to main page");
+            window.location.href = '/';
+        }
+        else if (event.data.startsWith("online:"))
+        {
+            document.getElementById("online").innerHTML = event.data;
+        }
+        else if (event.data.startsWith("messages"))
+            document.getElementById("messages").innerHTML = event.data;
+    };
+
+    function send_message() {
+        if (document.getElementById("message").value.length == 0) {
+            alert("input message txt");
+            return;
+        }
+
+        socket.send(
+            "message=" + document.getElementById("message").value
+        );
+    }
+
+</script>
+
+</body>
+</html>
