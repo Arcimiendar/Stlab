@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shops</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <select name="shop">
+            {% for shop in shops %}
+                <option value="{{ shop.id }}">
+                    {{ shop }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" value="open">
+    </form>
+</body>
+</html>

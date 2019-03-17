@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ object.name }}</title>
+    <style>
+        td {
+            vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ object.name }}</h1>
+    <p>
+        <h3>description:</h3>
+        {% if object.address is not none %}
+            address: {{ object.address }} <br>
+        {% endif %}
+        staff amount: {{ object.staff_amount }} <br>
+    </p>
+
+{#    {{ deparments = object.departments }}#}
+
+    {% for department in object.departments.all.prefetch_related %}
+        <table>
+            <tr>
+                <td colspan="4">{{ department.sphere }}</td>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td>description</td>
+                <td>price</td>
+                <td>comments</td>
+            </tr>
+            {% for item in department.items.all.prefetch_related %}
+                <tr {% if item.is_sold %} style="background-color: lightgray" {% endif %}>
+                    <td>
+                        {{ item.name }}
+                    </td>
+                    <td>
+                        {{ item.description }}
+                    </td>
+                    <td>
+                        {{ item.price }}
+                    </td>
+                    <td>
+                        {% for comment in item.comments %}
+                            {{ comment }} <br>
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br>
+    {% endfor %}
+
+</body>
+</html>
