@@ -7,11 +7,6 @@ from django.views.generic import DetailView, UpdateView, DeleteView, CreateView,
 from .models import Shop, Item, Department
 
 
-class DistinctSum(Sum):
-    function = "SUM"
-    template = "%(function)s(DISTINCT %(expressions)s)"
-
-
 class ShopsView(View):
     def get(self, request):
 
@@ -180,12 +175,30 @@ class ShopFilterView(ListView):
         elif self.kwargs['number'] == 2:
             queryset = queryset.filter(departments__items__price__lt=5).distinct()
         elif self.kwargs['number'] == 3:
-            queryset_departments = queryset.annotate(number_departments=Count('departments', distinct=True),
-                                                     sum_departments_staff_amount=Sum("departments__staff_amount"))
-            queryset_items = queryset.annotate(max_price=Max('departments__items__price'),
-                                               items_number=Count('departments__items'))
+            queryset_departments = queryset.annotate(
+                number_departments=Count('departments', distinct=True),
+                sum_departments_staff_amount=Sum("departments__staff_amount")
+            ).order_by('id')
+            queryset_items = queryset.annotate(
+                max_price=Max('departments__items__price'),
+                items_number=Count('departments__items')
+            ).values('max_price', 'id', 'items_number').order_by('id')
 
-            queryset = queryset_departments | queryset_items
+            queryset = Shop.objects.raw(
+                """
+                select s.id, s.name, s.address, s.staff_amount, count(d.id) departments_count, 
+                sum(d.staff_amount) department_staff, sq.items_count, sq.max_price  
+                from task1_shop s 
+                inner join task1_department d on s.id = d.shop_id 
+                inner join (select s.id, count(i.id) items_count, max(i.price) max_price 
+                from task1_shop s 
+                inner join task1_department d on s.id = d.shop_id 
+                inner join task1_item i on d.id = i.department_id 
+                group by s.id) 
+                sq on s.id = sq.id group by s.id, s.name, s.address, s.staff_amount, sq.items_count, sq.max_price 
+                order by s.id
+                """
+            )
 
         elif self.kwargs['number'] == 4:
             queryset = queryset.annotate(
