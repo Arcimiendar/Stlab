@@ -1,3 +1,6 @@
+from functools import reduce
+
+
 class Department:
 
     class BudgetError(ValueError):
@@ -11,8 +14,7 @@ class Department:
 
     def get_budget_plan(self) -> int:
         budget_plan = self.budget
-        for salary in self.employees.values():
-            budget_plan -= salary
+        budget_plan -= sum(self.employees.values())
 
         if budget_plan < 0:
             raise self.BudgetError
@@ -33,13 +35,13 @@ class Department:
 
         departments.sort()
 
-        for i in range(len(departments)):
-            if not i:
-                temp_department = departments[0]
-            else:
-                temp_department = cls.__adding(departments[i], temp_department)
+        temp_department = reduce(
+            lambda accumulator_department, department: cls.__adding(department, accumulator_department),
+            departments[1:], departments[0]
+        )
 
         temp_department.get_budget_plan()
+
         return temp_department
 
     def __gt__(self, other):
@@ -66,8 +68,7 @@ class Department:
         return Department(new_name, new_employees, new_budget)
 
     def __add__(self, other: 'Department'):
-        to_return = self.__adding(self, other)
-        to_return.get_budget_plan()
+        to_return = self.merge_departments(self, other)
         return to_return
 
     def __repr__(self):

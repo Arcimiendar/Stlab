@@ -1,24 +1,24 @@
 import types
 
 
-def get_new_attr(old_attr):
+def get_new_attr(old_attrs):
     new_class_attr = {}
 
-    for name in old_attr:
-        if isinstance(old_attr[name], types.FunctionType):
+    for name, old_attr in old_attrs.items():
+        if isinstance(old_attr, types.FunctionType):
             if name.startswith('__'):
-                new_class_attr[name] = old_attr[name]
+                new_class_attr[name] = old_attr
             else:
-                new_class_attr[name.lower()] = old_attr[name]
+                new_class_attr[name.lower()] = old_attr
         elif isinstance(old_attr[name], type):
             splitted = name.split('_')
             new_name = ''
             for word in splitted:
                 new_name += word.title()
 
-            new_class_attr[new_name] = old_attr[name]
+            new_class_attr[new_name] = old_attr
         else:
-            new_class_attr[name.upper()] = old_attr[name]
+            new_class_attr[name.upper()] = old_attr
 
     return new_class_attr
 
