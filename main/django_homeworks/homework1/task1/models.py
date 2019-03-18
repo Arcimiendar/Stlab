@@ -4,10 +4,6 @@ from django.contrib.postgres import fields as postgres_fields
 
 class Shop(models.Model):
 
-    class Meta:
-        verbose_name = 'Shop'
-        verbose_name_plural = 'Shops'
-
     name = models.CharField(max_length=200)
     address = models.CharField(max_length=200, null=True, blank=True)
     staff_amount = models.IntegerField()
@@ -17,10 +13,6 @@ class Shop(models.Model):
 
 
 class Department(models.Model):
-
-    class Meta:
-        verbose_name = 'Department'
-        verbose_name_plural = 'Departments'
 
     sphere = models.CharField(max_length=200)
     staff_amount = models.IntegerField()
@@ -32,10 +24,6 @@ class Department(models.Model):
 
 
 class Item(models.Model):
-
-    class Meta:
-        verbose_name = 'Item'
-        verbose_name_plural = 'Items'
 
     name = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)

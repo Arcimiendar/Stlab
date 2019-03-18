@@ -7,10 +7,16 @@
         td {
             vertical-align: top;
         }
+        table, td, th {
+             border: 1px solid black
+        }
     </style>
 </head>
 <body>
-    <h1>{{ object.name }}</h1>
+    <h1>
+        <a href="/shops/{{ object.id }}/more">{{ object.name }}</a>
+        <a href="/departments/{{ object.id }}/create">add departments</a>
+    </h1>
     <p>
         <h3>description:</h3>
         {% if object.address is not none %}
@@ -19,18 +25,22 @@
         staff amount: {{ object.staff_amount }} <br>
     </p>
 
-{#    {{ deparments = object.departments }}#}
 
     {% for department in object.departments.all.prefetch_related %}
         <table>
             <tr>
-                <td colspan="4">{{ department.sphere }}</td>
+                <th colspan="4">{{ department.sphere }}</th>
+                <td>
+                    <a href="/items/{{ department.id }}/create">add item</a>
+                    <a href="/departments/{{ department.id }}/delete">delete</a>
+                    <a href="/departments/{{ department.id }}/edit">edit</a>
+                </td>
             </tr>
             <tr>
-                <td>name</td>
-                <td>description</td>
-                <td>price</td>
-                <td>comments</td>
+                <th>name</th>
+                <th>description</th>
+                <th>price</th>
+                <th>comments</th>
             </tr>
             {% for item in department.items.all.prefetch_related %}
                 <tr {% if item.is_sold %} style="background-color: lightgray" {% endif %}>
@@ -48,11 +58,14 @@
                             {{ comment }} <br>
                         {% endfor %}
                     </td>
+                    <td>
+                        <a href="/items/{{ item.id }}/delete">delete</a>
+                        <a href="/items/{{ item.id }}/edit">edit</a>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
         <br>
     {% endfor %}
-
 </body>
 </html>
