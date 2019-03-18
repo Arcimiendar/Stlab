@@ -14,9 +14,9 @@ def get_max_and_min(data: typing.Set[typing.Union[
     for i in data:
         if isinstance(i, str):
             if i.find('\\') != -1:
-                splitted = i.split()
-                i = splitted[0] + '/' + splitted[2]
-                list_to_search.append(fractions.Fraction(i))
+                list_to_search.append(
+                    fractions.Fraction(i.replace('\\', '/'))
+                )
             else:
                 list_to_search.append(decimal.Decimal(i))
         else:
@@ -30,3 +30,8 @@ def get_max_and_min(data: typing.Set[typing.Union[
     )
 
     return to_return
+
+
+print(get_max_and_min(
+    {'10\\2'}
+))

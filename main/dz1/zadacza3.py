@@ -14,11 +14,9 @@ class FibIterator:
         if self._calls == 1:
             return 0
 
-        value = self._current
-        self._current += self._previous
-        self._previous = value
+        self._current, self._previous = self._current + self._previous, self._current
 
-        return value
+        return self._previous
 
 
 def fib_generator():
@@ -31,8 +29,7 @@ def fib_generator():
             yield 0
         else:
             yield current
-            current, previous = previous, current
-            current += previous
+            current, previous = previous + current, current
 
 
 def strange_decorator(func):

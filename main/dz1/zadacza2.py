@@ -2,37 +2,40 @@ import typing
 import functools
 
 
-def analyze_students(d: typing.Dict[str, typing.Dict[str, typing.List[int]]]) -> typing.Set[typing.Tuple]:
-    return {(s, u, functools.reduce(lambda a, x: a*x, d[s][u])) for s in d for u in d[s] if u != '1C'}  # it fits!
+def analyze_students(data: typing.Dict[str, typing.Dict[str, typing.List[int]]]) -> typing.Set[typing.Tuple]:
+    return {(student, subject, functools.reduce(lambda accumulator, note: accumulator * note, data[student][subject])) for student in data for subject in data[student] if subject != '1C'}  # it doesn't fit yet!
 
 
 def validate_data(data: typing.Dict) -> bool:
-    for student in data:
+
+    raise_value_error = False
+
+    for student, subjects in data.items():
         if not isinstance(student, str):
             raise TypeError
 
-        for subject in data[student]:
-            if not isinstance(subject, str):
-                raise TypeError
-
-            for note in data[student][subject]:
-                if not (isinstance(note, int) and not isinstance(note, bool)):
-                    raise TypeError
-
-    for student in data:
         for letter in student:
             if not (ord('0') <= ord(letter) <= ord('9') or
                     ord('a') <= ord(letter.lower()) <= ord('z')):
-                raise ValueError
+                raise_value_error = True
 
-        for subject in data[student]:
+        for subject, notes in subjects.items():
+            if not isinstance(subject, str):
+                raise TypeError
+
             for letter in subject:
                 if not (ord('0') <= ord(letter) <= ord('9') or
                         ord('a') <= ord(letter.lower()) <= ord('z')):
-                    raise ValueError
+                    raise_value_error = True
 
-            for note in data[student][subject]:
+            for note in notes:
+                if not (isinstance(note, int) and not isinstance(note, bool)):
+                    raise TypeError
+
                 if note < 1 or note > 10:
-                    raise ValueError
+                    raise_value_error = True
+
+    if raise_value_error:
+        raise ValueError
 
     return True
