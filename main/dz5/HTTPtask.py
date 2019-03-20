@@ -28,7 +28,7 @@ def get_weather():
     data = get("https://yandex.by/pogoda/region/149")
     cities = re.findall(pattern_page, data.text)
 
-    weather_dict = dict()
+    weather_dict = {}
 
     for city in cities:
         url = "https://yandex.by" + city[0]
