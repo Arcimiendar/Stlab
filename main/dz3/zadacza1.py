@@ -18,7 +18,7 @@ class RegParser:
     def find(cls, string: str, pattern_num: int) \
             -> List[Union[str, Dict[str, str], Union[int, float]]]:
 
-        result = list()
+        result = []
 
         if pattern_num == 1:
             return re.findall(cls.ADDRESS_REGEX, string, re.MULTILINE)
@@ -28,13 +28,12 @@ class RegParser:
             for line in splitted_string:
                 matched_data = re.match(cls.CONTACT_REGEX, line)
                 if matched_data is not None:
-                    result.insert(0, dict())
+                    result.insert(0, {})
                     for key in ['age', 'name', 'surname', 'city']:
                         data = matched_data.group(key)
                         if data is not None:
                             result[0][key] = data
             result.reverse()
-            return result
 
         elif pattern_num == 3:
             string_prices = re.findall(cls.PRICE_REGEX, string)
@@ -45,7 +44,7 @@ class RegParser:
                 else:
                     result.append(int(string_price))
 
-            return result
-
         else:
             raise ValueError
+
+        return result
