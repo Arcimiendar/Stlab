@@ -1,20 +1,16 @@
+{% load url %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ object.name }}</title>
-    <style>
-        td {
-            vertical-align: top;
-        }
-        table, td, th {
-             border: 1px solid black
-        }
-    </style>
+    {% include 'task1/title.html' %}
+    <link rel="stylesheet" type="text/css" href="{% static 'base_style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'table.css' %}">
 </head>
 <body>
     <h1>
-        <a href="/shops/{{ object.id }}/more">{{ object.name }}</a>
+        {{ object | url }}
         <a href="/departments/{{ object.id }}/create">add departments</a>
     </h1>
     <p>
@@ -29,7 +25,7 @@
     {% for department in object.departments.all.prefetch_related %}
         <table>
             <tr>
-                <th colspan="4">{{ department.sphere }}</th>
+                <th colspan="4">{{ department | url }}</th>
                 <td>
                     <a href="/items/{{ department.id }}/create">add item</a>
                     <a href="/departments/{{ department.id }}/delete">delete</a>
@@ -45,7 +41,7 @@
             {% for item in department.items.all.prefetch_related %}
                 <tr {% if item.is_sold %} style="background-color: lightgray" {% endif %}>
                     <td>
-                        {{ item.name }}
+                        {{ item | url }}
                     </td>
                     <td>
                         {{ item.description }}

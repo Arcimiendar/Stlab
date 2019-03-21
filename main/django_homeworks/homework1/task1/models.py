@@ -11,6 +11,9 @@ class Shop(models.Model):
     def __str__(self):
         return self.name
 
+    def __repr__(self):
+        return self.__str__()
+
 
 class Department(models.Model):
 
@@ -22,12 +25,15 @@ class Department(models.Model):
     def __str__(self):
         return f'{self.shop.name}: {self.sphere}'
 
+    def __repr__(self):
+        return self.__str__()
+
 
 class Item(models.Model):
 
     name = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
-    price = models.IntegerField()
+    price = models.FloatField()
     is_sold = models.BooleanField(null=False)
     comments = postgres_fields.ArrayField(
         models.CharField(max_length=200, blank=True, null=True), blank=True
@@ -36,3 +42,15 @@ class Item(models.Model):
 
     def __str__(self):
         return f'{self.department.shop.name}: {self.department.sphere}: {self.name}'
+
+    def __repr__(self):
+        return self.__str__()
+
+
+class Statistics(models.Model):
+
+    url = models.CharField(max_length=100)
+    amount = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.amount} times on {self.url}'
