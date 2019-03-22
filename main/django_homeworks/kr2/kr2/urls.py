@@ -30,5 +30,5 @@ urlpatterns = [
     path('teachers/create', views.TeacherCreateView.as_view()),
     path('note/teacher/<int:pk>/create', views.NoteCreateTeacherView.as_view()),
     path('note/student/<int:pk>/create', views.NoteCreateStudentView.as_view()),
-    path('message', views.MessageView.as_view()),
+    path('message', views.MessageView.as_view(), name='note_not'),
 ]
