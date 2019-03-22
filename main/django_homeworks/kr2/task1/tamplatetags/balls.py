@@ -1,11 +1,10 @@
 from django import template
-from ..models import Department
 
 
 register = template.Library()
 
 
-@register.simple_tag
+@register.filter
 def balls(value):
 
     result = None

@@ -1,3 +1,4 @@
+{% load balls %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +43,7 @@
                     <tr>
                         <td>{{ note.teacher }}</td>
                         <td>{{ note.day | default_if_none:'uknown day'}}</td>
-                        <td>{{ note.note }}</td>
+                        <td>{{ note.note | balls}}</td>
                     </tr>
                 {% endfor %}
             </table>
