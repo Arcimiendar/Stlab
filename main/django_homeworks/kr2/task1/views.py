@@ -98,6 +98,8 @@ class NoteCreateTeacherView(CreateView):
 
     def form_valid(self, form):
 
+
+
         self.object = Note(
             teacher_id=self.kwargs['pk'], **form.cleaned_data
         )
@@ -105,6 +107,7 @@ class NoteCreateTeacherView(CreateView):
         self.object.save()
 
         return redirect(f'/teachers/{self.object.teacher_id}')
+
 
 
 class NoteCreateStudentView(CreateView):
