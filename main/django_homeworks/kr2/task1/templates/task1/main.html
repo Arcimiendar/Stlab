@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% include 'task1/title.html' %}
+    <link rel="stylesheet" type="text/css" href="{% static 'table.css' %}">
+</head>
+<body>
+    <a href="/teachers/create">create</a>
+    <table>
+        <tr>
+            <th>
+                teacher name
+            </th>
+            <th>
+                links
+            </th>
+        </tr>
+        {% for teacher in teachers %}
+        <tr>
+            <td>
+                <a href="teachers/{{ teacher.id }}">{{ teacher }}</a>
+            </td>
+            <td>
+                <a href="/teachers/{{ teacher.id }}/edit">edit</a>
+                <a href="/teachers/{{ teacher.id }}/delete">delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/students/create">create</a>
+    <table>
+        <tr>
+            <th>
+                student name
+            </th>
+            <th>
+                links
+            </th>
+        </tr>
+        {% for student in students %}
+        <tr>
+            <td>
+                <a href="/students/{{ student.id }}">{{ student }}</a>
+            </td>
+            <td>
+                <a href="/students/{{ student.id }}/edit">edit</a>
+                <a href="/students/{{ student.id }}/delete">delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
