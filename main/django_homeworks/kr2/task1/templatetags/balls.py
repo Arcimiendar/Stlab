@@ -9,7 +9,9 @@ def balls(value):
 
     result = None
 
-    if 0 < value < 5:
+    if 0 == value:
+        result = f'{value} баллов'
+    elif value >= 5:
         result = f'{value} баллов'
     elif value == 1:
         result = f'{value} балл'
