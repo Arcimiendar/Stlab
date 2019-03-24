@@ -98,8 +98,6 @@ class NoteCreateTeacherView(CreateView):
 
     def form_valid(self, form):
 
-
-
         self.object = Note(
             teacher_id=self.kwargs['pk'], **form.cleaned_data
         )
