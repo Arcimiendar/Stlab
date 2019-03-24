@@ -19,5 +19,30 @@
 
         <input type="submit" value="open">
     </form>
+    <a href="{{ compare }}">compare departments</a>
+    <form method="post">
+        {% csrf_token %}
+        <label for="filter">get shops where</label>
+        <select name="filter">
+            <option value="1">staff amount doesn't equal to sum of its department staff amount</option>
+            <option value="2">shop has item with price is less than 5</option>
+            <option value="3">test annotate (sum price, sum department stuff amount, count price, count department)</option>
+            <option value="4">test annotate (number of items, that contains 'a' or price less than 10)</option>
+        </select>
+        <input type="submit" value="ok" name="shop filter">
+    </form>
+    <form method="post">
+        {% csrf_token %}
+        <label for="filter">get items where</label>
+        <select name="filter">
+            <option value="1">name starts with i</option>
+            <option value="2">price > 10 and shop staff amount > 50</option>
+            <option value="3">price > 20 or shop staff amount > 50</option>
+            <option value="4">department id is 1 or 3 or 5 or 6</option>
+            <option value="5">(price > 10 and name contains 'a') or (price < 20 and name contains 'o')</option>
+            <option value="6">price = department staff amount + 10</option>
+        </select>
+        <input type="submit" value="ok" name="item filter">
+    </form>
 </body>
 </html>

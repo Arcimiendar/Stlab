@@ -1,4 +1,5 @@
 {% load get_leader %}
+{% load is_leader %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -29,10 +30,10 @@
             <td>
                 {{ list.0 }}
             </td>
-            <td>
+            <td class="{% is_leader comparing_names.1 comparing_names.2 list.0 1 %}">
                 {{ list.1 | default_if_none:"0" | floatformat:"-1" }}
             </td>
-            <td>
+            <td class="{% is_leader comparing_names.2 comparing_names.1 list.0 0 %}">
                 {{ list.2 | default_if_none:"0" | floatformat:"-1" }}
             </td>
             <td> {% get_leader comparing_names.1 comparing_names.2 list.0 %} </td>

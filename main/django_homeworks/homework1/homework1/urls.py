@@ -21,7 +21,7 @@ from task1 import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.ShopsView.as_view(), name='index'),
-    path('shops/<int:pk>/', views.ShopDetailView.as_view(), name='shopDetail'),
+    path('shops/<int:pk>/', views.ShopDetailView.as_view(), name='shop_detail'),
     path('shops/<int:pk>/more', views.ShopDetailMoreView.as_view()),
     path('shops/<int:pk>/edit', views.ShopUpdate.as_view(), name='shop_edit'),
     path('shops/<int:pk>/delete', views.ShopDelete.as_view()),
@@ -34,6 +34,6 @@ urlpatterns = [
     path('departments/<int:shop_id>/create', views.DepartmentCreate.as_view()),
     path('filter/item/<int:number>', views.ItemFilterView.as_view()),
     path('filter/shop/<int:number>', views.ShopFilterView.as_view()),
-    path('compare', views.CompareView.as_view()),
+    path('compare', views.CompareView.as_view(), name='compare'),
     path('message', views.ItemsNotSoldView.as_view(), name='item_not_sold'),
 ]

@@ -10,11 +10,17 @@ from .forms import CompareForm
 
 class ShopsView(View):
     def get(self, request):
-
-        return render(request, "shop.html", context={'shops': Shop.objects.all()})
+        context = {
+            'shops': Shop.objects.all(),
+            'compare': reverse_lazy('compare')
+        }
+        return render(request, "shop.html", context=context)
 
     def post(self, request):
-
+        if 'shop filter' in request.POST:
+            return redirect(f"filter/shop/{request.POST.get('filter')}")
+        if 'item filter' in request.POST:
+            return redirect(f"filter/item/{request.POST.get('filter')}")
         return redirect(f'shops/{request.POST.get("shop")}/')
 
 
@@ -127,7 +133,7 @@ class ShopCreate(CreateView):
     template_name = 'task1/create.html'
 
     def get_success_url(self):
-        return reverse_lazy('shopDetail', args=[self.object.id])
+        return reverse_lazy('shop_detail', args=[self.object.id])
 
 
 class ShopDetailMoreView(DetailView):
@@ -176,14 +182,6 @@ class ShopFilterView(ListView):
         elif self.kwargs['number'] == 2:
             queryset = queryset.filter(departments__items__price__lt=5).distinct()
         elif self.kwargs['number'] == 3:
-            queryset_departments = queryset.annotate(
-                number_departments=Count('departments', distinct=True),
-                sum_departments_staff_amount=Sum("departments__staff_amount")
-            ).order_by('id')
-            queryset_items = queryset.annotate(
-                max_price=Max('departments__items__price'),
-                items_number=Count('departments__items')
-            ).values('max_price', 'id', 'items_number').order_by('id')
 
             queryset = Shop.objects.raw(
                 """
@@ -203,9 +201,9 @@ class ShopFilterView(ListView):
 
         elif self.kwargs['number'] == 4:
             queryset = queryset.annotate(
-                specific_items=Count('departments__items',
-                                     filter=
-                                     Q(departments__items__price__lte=10) | Q(departments__items__name__contains='a'))
+                specific_items=Count(
+                    'departments__items', filter=
+                    Q(departments__items__price__lte=10) | Q(departments__items__name__contains='a'))
             )
 
         return queryset

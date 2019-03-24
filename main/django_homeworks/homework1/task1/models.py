@@ -22,6 +22,14 @@ class Department(models.Model):
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE,
                              related_name="departments", verbose_name="Shop")
 
+    def __eq__(self, other: 'Department'):
+        if self.sphere == other.sphere and \
+           self.staff_amount == other.staff_amount and \
+           self.shop_id == other.shop_id:
+            return True
+        else:
+            return False
+
     def __str__(self):
         return f'{self.shop.name}: {self.sphere}'
 
