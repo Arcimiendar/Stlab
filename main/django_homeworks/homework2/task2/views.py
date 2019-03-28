@@ -19,7 +19,7 @@ class UnsoldItemApiView(APIView):
 
     def get(self, request, detail=False):
         items = Item.objects.filter(is_sold=False)
-        data = {'response': '401 permission denied'}, 401
+        data = {'response': '403 permission denied'}, 403
 
         if request.user.is_superuser:
             data = ItemFullSerializer(
@@ -38,7 +38,7 @@ class UnsoldItemApiView(APIView):
             Item.objects.all().delete()
             return Response({'response': '200ok'})
         else:
-            return Response({'response': '401 permission denied'}, 401)
+            return Response({'response': '403 permission denied'}, 403)
 
 
 class ItemViewSet(ModelViewSet):
