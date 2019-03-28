@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from .models import Item, Department, Shop
+from .serializer_fields import DepartmentStringField
 
 
 class ItemSerializerForUserWithoutNameAndSurname(serializers.HyperlinkedModelSerializer):
@@ -65,7 +66,7 @@ class DepartmentSerializer(DepartmentSerializerForUserWithNameAndSurname):
 
 
 class ShopSerializerForUserWithoutNameAndSurname(serializers.HyperlinkedModelSerializer):
-    departments = serializers.StringRelatedField(many=True, read_only=True, validators=[shop_validator])
+    departments = DepartmentStringField(many=True, read_only=True)
 
     class Meta:
         model = Shop

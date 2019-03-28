@@ -9,8 +9,9 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from .models import Item, Shop, Department
 from .serializers import ItemFullSerializer, ItemPartSerializer, UserSerializer, \
-                         DepartmentSerializer, ShopSerializer, ShopSerializerForUserWithNameAndSurname, \
-                         ShopSerializerForUserWithoutNameAndSurname
+    DepartmentSerializer, ShopSerializer, ShopSerializerForUserWithNameAndSurname, \
+    ShopSerializerForUserWithoutNameAndSurname, DepartmentSerializerForUserWithNameAndSurname, \
+    DepartmentSerializerForUserWithoutNameAndSurname
 from .permissions import IsStaff, IsUserWithNameAndSurname, IsUserWithoutNameAndSurname
 
 
@@ -42,7 +43,6 @@ class UnsoldItemApiView(APIView):
 
 class ItemViewSet(ModelViewSet):
     queryset = Item.objects.all()
-    serializer_class = ItemFullSerializer
     permission_classes = [IsStaff | IsUserWithNameAndSurname | IsUserWithoutNameAndSurname]
 
     def get_queryset(self):
@@ -54,7 +54,6 @@ class ItemViewSet(ModelViewSet):
 
 class DepartmentViewSet(ModelViewSet):
     queryset = Department.objects.all()
-    serializer_class = DepartmentSerializer
     permission_classes = [IsStaff | IsUserWithNameAndSurname | IsUserWithoutNameAndSurname]
 
     def get_queryset(self):
@@ -65,6 +64,14 @@ class DepartmentViewSet(ModelViewSet):
                 .filter(item_sold__lt=1)
         return queryset
 
+    def get_serializer_class(self):
+        if self.request.user.is_staff:
+            return DepartmentSerializer
+        elif len(self.request.user.first_name):
+            return DepartmentSerializerForUserWithNameAndSurname
+        else:
+            return DepartmentSerializerForUserWithoutNameAndSurname
+
 
 class ShopViewSet(ModelViewSet):
     queryset = Shop.objects.all()
@@ -73,11 +80,11 @@ class ShopViewSet(ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset
-        # if not self.request.user.is_staff:
-            # queryset = queryset.annotate(item_count=Count('departments__items')).filter(item_count__gt=0)
-            # queryset = queryset.annotate(
-            #     item_sold=Count('departments__items__is_sold', filter=Q(departments__items__is_sold=True))
-            # ).filter(item_sold__lt=1)
+        if not self.request.user.is_staff:
+            queryset = queryset.annotate(item_count=Count('departments__items')).filter(item_count__gt=0)
+            queryset = queryset.annotate(
+                item_sold=Count('departments__items__is_sold', filter=Q(departments__items__is_sold=True))
+            ).filter(item_sold__lt=1)
         return queryset
 
     def get_serializer_class(self):
@@ -90,7 +97,14 @@ class ShopViewSet(ModelViewSet):
 
     def get_serializer(self, *args: Any, **kwargs: Any):
         serializer = super().get_serializer(*args, **kwargs)
-
+        if isinstance(serializer.data, dict):
+            return serializer
+        for shop in serializer.data:
+            try:
+                while True:
+                    shop['departments'].remove(None)
+            except ValueError:
+                pass
         return serializer
 
 
