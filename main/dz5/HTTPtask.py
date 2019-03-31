@@ -1,4 +1,6 @@
 from requests import get
+from typing import Dict
+from lxml import html
 import re
 
 
@@ -6,7 +8,7 @@ def exchange_rates(currency_abbreviation: str) -> float:
 
     data = get(f"http://www.nbrb.by/API/ExRates/Rates/{currency_abbreviation}?ParamMode=2")
 
-    if data.status_code == 404:
+    if data.status_code != 200:
         raise ValueError(f"Currency '{currency_abbreviation}' not found")
 
     rate = data.json()["Cur_OfficialRate"]
@@ -15,7 +17,7 @@ def exchange_rates(currency_abbreviation: str) -> float:
     return 1 / rate * scale
 
 
-def get_weather():
+def get_weather() -> Dict[str, int]:
 
     pattern_page = r"<a class=\"link link_theme_normal " \
               r"place-list__item-name i-bem\" tabindex=\"0\" href=\"" \
@@ -43,3 +45,24 @@ def get_weather():
         weather_dict[city[1]] = int(value)
 
     return weather_dict
+
+
+def get_weather1() -> Dict[str, int]:
+    data = get("https://yandex.by/pogoda/region/149")
+    tree = html.fromstring(data.text)
+    city_elemnts = tree.xpath("//a[@class='link link_theme_normal place-list__item-name i-bem']")
+
+    weather_result = {}
+
+    for city in city_elemnts:
+        data = get("https://yandex.by" + city.attrib['href'])
+
+        city_tree = html.fromstring(data.text)
+
+        temperature = city_tree.xpath('//div[@class="temp fact__temp fact__temp_size_s"]')[0].xpath('span')[0].text
+        if temperature[0] == chr(8722):
+            temperature = -1 * int(value[1:])
+
+        weather_result[city.text] = int(temperature)
+
+    return weather_result
