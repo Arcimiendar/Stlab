@@ -47,6 +47,7 @@ class UrlTests(TestCase):
             element.send_keys('item test')
             element = driver.find_element_by_id('id_price')
             element.send_keys(str(randint(1, 1000)))
+            time.sleep(0.1)
             buttons = driver.find_elements_by_tag_name('input')
             submit = buttons[-1]
             submit.submit()
@@ -60,6 +61,7 @@ class UrlTests(TestCase):
         a_tag_count -= 1
 
         for i in range(a_tag_count):
+            driver.get('http://127.0.0.1:8000/shops/1/')
             driver.get('http://127.0.0.1:8000/shops/1/')
             driver.find_elements_by_id('IKEA: tables: item test')[0].click()
 
