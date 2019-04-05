@@ -55,7 +55,7 @@
                         {% endfor %}
                     </td>
                     <td>
-                        <a href="/items/{{ item.id }}/delete">delete</a>
+                        <a id="{{ item }}" href="/items/{{ item.id }}/delete">delete</a>
                         <a href="/items/{{ item.id }}/edit">edit</a>
                     </td>
                 </tr>
