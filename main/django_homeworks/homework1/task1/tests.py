@@ -57,7 +57,7 @@ class UrlTests(TestCase):
         print(a_tag_count)
         a_tags[0].click()
         driver.find_element_by_tag_name('input').submit()
-        a_tag_count -= 2
+        a_tag_count -= 1
 
         for i in range(a_tag_count):
             driver.get('http://127.0.0.1:8000/shops/1/')
