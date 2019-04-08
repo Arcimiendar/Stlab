@@ -13,7 +13,6 @@ class MainPageView(View):
             'students': Student.objects.all(),
             'teachers': Teacher.objects.all(),
         }
-
         return render(request, 'task1/main.html', context=context)
 
 
@@ -97,35 +96,26 @@ class NoteCreateTeacherView(CreateView):
     success_url = reverse_lazy('main')
 
     def form_valid(self, form):
-
         self.object = Note(
             teacher_id=self.kwargs['pk'], **form.cleaned_data
         )
-
         self.object.save()
-
         return redirect(f'/teachers/{self.object.teacher_id}')
 
 
-
 class NoteCreateStudentView(CreateView):
-
     model = Note
     template_name = 'task1/create.html'
     fields = ('note', 'student')
     success_url = reverse_lazy('main')
 
     def form_valid(self, form):
-
         self.object = Note(
             teacher_id=self.kwargs['pk'], **form.cleaned_data
         )
-
         self.object.save()
-
         return redirect(f'/students/{self.object.student_id}')
 
 
 class MessageView(TemplateView):
-
     template_name = 'task1/message.html'
