@@ -1,4 +1,4 @@
-from threading import Thread, Lock, BoundedSemaphore, Event, Barrier, Condition
+from threading import Thread, Lock, BoundedSemaphore, Event, Barrier, Condition, BrokenBarrierError
 from typing import NoReturn
 import time
 
@@ -135,7 +135,7 @@ def tourist_guard_2_task():
 
 class RollerCoaster(Thread):
     __PRINT_LOCK = Lock()
-    __BARRIER = Barrier(5)
+    __BARRIER = Barrier(5, timeout=4)
     __id = 0
 
     def __init__(self):
@@ -147,7 +147,10 @@ class RollerCoaster(Thread):
         self.start()
 
     def run(self) -> NoReturn:
-        self.__BARRIER.wait()
+        try:
+            self.__BARRIER.wait()
+        except BrokenBarrierError:
+            self.__BARRIER.reset()
         with self.__PRINT_LOCK:
             print(f'my id is {self._current_id}')
 

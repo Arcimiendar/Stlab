@@ -2,14 +2,9 @@ from random import randint
 import time
 
 from django.test import TestCase
-from selenium.webdriver.support import expected_conditions
-from selenium.webdriver.support.wait import WebDriverWait
-from wheel.signatures.djbec import By
 
 from .models import Item
 from selenium import webdriver
-import sys
-import os
 
 
 class UrlTests(TestCase):
@@ -63,7 +58,10 @@ class UrlTests(TestCase):
         for i in range(a_tag_count):
             driver.get('http://127.0.0.1:8000/shops/1/')
             driver.get('http://127.0.0.1:8000/shops/1/')
-            driver.find_elements_by_id('IKEA: tables: item test')[0].click()
+
+            elements = driver.find_elements_by_id('IKEA: tables: item test')
+            self.assertNotEqual(len(elements), 0)  # if there is nothing of new items on page
+            elements[0].click()
 
             driver.find_element_by_tag_name('input').submit()
 
