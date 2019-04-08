@@ -1,21 +1,14 @@
-import collections
+from collections import namedtuple
 import types
 import typing
 
 
-namedtuple = collections.namedtuple
-
-
 def log_decorator(func: typing.Callable, name_func: str):
     def new_func(self, *args, **kwargs):
-        
         result = func(self, *args, **kwargs)
-
         self.log.append(self.LogItem(name=name_func, args=list(args),
                                      kwargs=kwargs, result=result))
-
         return result
-
     return new_func
 
 
@@ -24,7 +17,7 @@ def last_log(self):
 
     self.log.reverse()
 
-    log = list()
+    log = []
 
     iteration = 0
 
@@ -43,10 +36,10 @@ class Logger(type):
 
     @staticmethod
     def get_new_attr(dct: typing.Dict[str, typing.Any]):
-        new_dct = dict()
+        new_dct = {}
         new_dct["LogItem"] = namedtuple('LogItem', ['name', 'args', 'kwargs', 'result'],
                                         defaults=[str(), list(), dict()])
-        new_dct["log"] = list()
+        new_dct["log"] = []
         new_dct['last_log'] = last_log
 
         for name_of_attribute in dct:

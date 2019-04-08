@@ -13,7 +13,7 @@ def xlsx_to_json(xlsx_workbook, json_file: File):
     further_json = dict()
 
     key = sheet['A1'].value
-    further_json[key] = dict()
+    further_json[key] = {}
 
     for row in sheet.rows:
         if row[0].value is not None:
