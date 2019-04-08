@@ -12,7 +12,7 @@ def update_currencies():
 
         currency_data = sorted(currency_data, key=lambda currency: currency['Cur_Abbreviation'])
 
-        data_without_repeats = list()
+        data_without_repeats = []
 
         for currency in currency_data:
 
