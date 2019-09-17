@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>filter result</title>
+</head>
+<body>
+    <ul>
+        {% for item in object_list %}
+            <li>{{ item }}</li>
+        {% empty %}
+            <li>no matching results</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

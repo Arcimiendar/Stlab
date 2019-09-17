@@ -1,0 +1,217 @@
+[
+  {
+    "model": "task1.shop",
+    "pk": 1,
+    "fields" : {
+      "name": "IKEA",
+      "staff_amount": 200
+    }
+  },
+  {
+    "model": "task1.shop",
+    "pk": 2,
+    "fields" : {
+      "name": "Biedronka",
+      "staff_amount": 300,
+      "address": "m. Przemysl ul. warszawska, d. 43"
+    }
+  },
+  {
+    "model": "task1.shop",
+    "pk": 3,
+    "fields": {
+      "name": "Соседи",
+      "staff_amount": 30
+    }
+  },
+  {
+    "model": "task1.department",
+    "pk": 1,
+    "fields": {
+      "sphere": "tables",
+      "staff_amount": 100,
+      "shop": 1
+    }
+  },
+  {
+    "model": "task1.department",
+    "pk": 2,
+    "fields": {
+      "sphere": "beds",
+      "staff_amount": 100,
+      "shop": 1
+    }
+  },
+  {
+    "model": "task1.department",
+    "pk": 3,
+    "fields": {
+      "sphere": "owocy",
+      "staff_amount": 12,
+      "shop": 2
+    }
+  },
+  {
+    "model": "task1.department",
+    "pk": 4,
+    "fields": {
+      "sphere": "warzywa",
+      "staff_amount": 15,
+      "shop": 2
+    }
+  },
+  {
+    "model": "task1.department",
+    "pk": 5,
+    "fields": {
+      "sphere": "конфеты",
+      "staff_amount": 4,
+      "shop": 3
+    }
+  },
+    {
+    "model": "task1.department",
+    "pk": 6,
+    "fields": {
+      "sphere": "хлебобулочные выробы",
+      "staff_amount": 10,
+      "shop": 3
+    }
+  },
+  {
+    "model": "task1.item",
+    "pk": 1,
+    "fields": {
+      "name": "plastic table",
+      "description": "amazing plastic table",
+      "price": 20,
+      "is_sold": false,
+      "comments": ["amazing", "wow cool", "how to close this site?"],
+      "department": 1
+    }
+  },
+  {
+    "model": "task1.item",
+    "pk": 2,
+    "fields": {
+      "name": "wood table",
+      "price": 100,
+      "is_sold": true,
+      "comments": [],
+      "department": 1
+    }
+  },
+  {
+    "model": "task1.item",
+    "pk": 3,
+    "fields": {
+      "name": "paper table",
+      "price": 6,
+      "is_sold": false,
+      "description": "You will like it! This table is recycling friendly!!!!",
+      "comments": ["HORRIBLE TABLE", "just return me my money!!!"],
+      "department": 1
+    }
+  },
+  {
+    "model": "task1.item",
+    "pk": 4,
+    "fields": {
+      "name": "jablko",
+      "price": 1,
+      "is_sold": false,
+      "description": "piekne polskie jablki",
+      "comments": ["ono jest bardzo smaczne!=)", "szarlotka z tych jablk jest pardzo ladnie"],
+      "department": 3
+    }
+  },
+  {
+    "model": "task1.item",
+    "pk": 5,
+    "fields": {
+      "name": "pomarancz",
+      "price": 2,
+      "is_sold": true,
+      "comments": ["dobrze!"],
+      "department": 3
+    }
+  },
+  {
+    "model": "task1.item",
+    "pk": 6,
+    "fields": {
+      "name": "mandarynka",
+      "price": 3,
+      "is_sold": true,
+      "description": "dradycyjny koladny owoc",
+      "comments": ["dobrze!", "ladnie!", "eksponujace!"],
+      "department": 3
+    }
+  },
+  {
+    "model": "task1.item",
+    "pk": 7,
+    "fields": {
+      "name": "Кит кат",
+      "price": 2,
+      "is_sold": false,
+      "comments": ["kitkat", "я думал это марс((((", "лол тут есть комменты?)))"],
+      "department": 5
+    }
+  },
+  {
+    "model": "task1.item",
+    "pk": 8,
+    "fields": {
+      "name": "аленка",
+      "price": 2,
+      "is_sold": true,
+      "comments": [],
+      "department": 5
+    }
+  },
+  {
+    "model": "task1.item",
+    "pk": 9,
+    "fields": {
+      "name": "печенье слодыч",
+      "price": 1,
+      "is_sold": false,
+      "comments": [],
+      "department": 5
+    }
+  },
+  {
+    "model": "task1.item",
+    "pk": 10,
+    "fields": {
+      "name": "ziemniaki",
+      "price": 1,
+      "is_sold": false,
+      "comments": [],
+      "department": 4
+    }
+  },
+  {
+    "model": "task1.item",
+    "pk": 11,
+    "fields": {
+      "name": "хлеб",
+      "price": 2,
+      "is_sold": false,
+      "comments": ["ХЛЕБ И ВСЕ"],
+      "department": 6
+    }
+  },
+  {
+    "model": "task1.item",
+    "pk": 12,
+    "fields": {
+      "name": "БуЛоЧкА СлАдКаЯ",
+      "price": 21,
+      "is_sold": false,
+      "comments": ["сладкая как лабы на ксисе", "10/10"],
+      "department": 6
+    }
+  }
+]

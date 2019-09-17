@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shop more detail</title>
+    <style>
+        td {
+            vertical-align: top;
+        }
+        table, td, th {
+             border: 1px solid black
+        }
+    </style>
+</head>
+<body>
+    <a href="/shops/{{ object.id }}/edit">edit</a>
+    <a href="/shops/{{ object.id }}/create">create new shop</a>
+    <a href="/shops/{{ object.id }}/delete">delete shop</a>
+    <br>
+    <table>
+        <tr>
+            <th>
+                field
+            </th>
+            <th>
+                value
+            </th>
+        </tr>
+        <tr>
+            <td>
+                name
+            </td>
+            <td>
+                {{ object.name }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                address
+            </td>
+            <td>
+                {{ object.address }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                staff amount
+            </td>
+            <td>
+                {{ object.staff_amount }}
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
