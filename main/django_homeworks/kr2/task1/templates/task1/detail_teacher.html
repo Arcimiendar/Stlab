@@ -1,0 +1,54 @@
+{% load balls %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% include 'task1/title.html' %}
+    <link rel="stylesheet" type="text/css" href="{% static 'table.css' %}">
+</head>
+<body>
+<table>
+    <tr>
+        <th>
+            field
+        </th>
+        <th>
+            value
+        </th>
+    </tr>
+    <tr>
+        <td>name</td>
+        <td>{{ object.name }}</td>
+    </tr>
+    <tr>
+        <td>surname</td>
+        <td>{{ object.surname }}</td>
+    </tr>
+    <tr>
+        <td>position</td>
+        <td>{{ object.position }}</td>
+    </tr>
+    <tr>
+        <td>notes</td>
+        <td>
+            <table>
+                <tr>
+                    <th>student</th>
+                    <th>day</th>
+                    <th><a href="/note/teacher/{{ teacher.id }}/create">note</a></th>
+                </tr>
+                {% for note in notes %}
+                    <tr>
+                        <td>{{ note.student }}</td>
+                        <td>{{ note.day | default_if_none:'uknown day'}}</td>
+                        <td>{{ note.note | balls }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
