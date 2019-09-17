@@ -1,0 +1,8 @@
+    <option value="empty">
+        choose currency
+    </option>
+{% for currency in currencies %}
+    <option value="{{ currency['Cur_Abbreviation'] }}">
+        {{ currency['Cur_Name_Eng'] }}
+    </option>
+{% endfor %}

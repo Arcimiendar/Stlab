@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>i guess this will be not seen</title>
+</head>
+<body>
+<form id="form" onsubmit="getRate(); return false;">
+    <label for="amount" id="number label">input in BYN</label> <br>
+    <input type="number" name="amount" id="amount" min="0">
+    <input type="button" name="mode" id="mode" value="in foreign" onclick="changeMode()">
+    <br>
+    <label for="abbreviation selector">
+        select abbreviation
+    </label>
+
+    <select name="abbreviation" id="abbreviation selector">
+
+    </select>
+    <br>
+    <input type="submit" value="convert">
+</form>
+
+<input type="button" value="update currencies" onclick="updateCurrencies()">
+<br>
+<input type="button" value="clear" onclick="clearDocument()">
+<div id="message">
+</div>
+
+<script>
+    function getSelection() {
+
+        var request = new XMLHttpRequest();
+
+        request.open("GET", "get_selector");
+
+        var selector = document.getElementById("abbreviation selector");
+
+        request.onreadystatechange = function () {
+            if (request.readyState == 4 && request.status == 200) {
+                selector.innerHTML = request.responseText;
+            }
+        };
+
+        request.send();
+    }
+
+    function clearDocument() {
+        var number_field = document.getElementById("amount");
+        number_field.value = "";
+
+        var message = document.getElementById("message");
+        message.innerText = "";
+
+        var mode_button = document.getElementById("mode")
+        if (mode_button.value == "in foreign") {
+            changeMode();
+        }
+
+        var selector = document.getElementById("abbreviation selector");
+        selector.selectedIndex = "0";
+    }
+
+    function changeMode() {
+        var label = document.getElementById("number label");
+        var button = document.getElementById("mode");
+
+        if (label.innerHTML == "input in BYN") {
+            label.innerHTML = "input in foreign currency";
+            button.value = "in BYN";
+        }
+        else {
+            label.innerHTML = "input in BYN";
+            button.value = "in foreign";
+        }
+    }
+
+    function updateCurrencies() {
+        var request = new XMLHttpRequest();
+        request.open("GET", "/update_currencies/");
+        var message = document.getElementById("message");
+
+        request.onreadystatechange = function () {
+
+            if (request.readyState == 4 && request.status == 200) {
+                message.innerHTML = request.responseText;
+                getSelection();
+            }
+        };
+
+        request.send();
+    }
+
+    function getRate() {
+
+        var url = '/';
+
+        if (document.getElementById("mode").value == "in BYN")
+            url += "foreign/";
+        else
+            url += "byn/";
+
+        if (document.getElementsByName("abbreviation")[0].value == "empty") {
+            alert("please, select currency");
+            return;
+        }
+
+        url += document.getElementsByName("abbreviation")[0].value;
+        url += '/';
+
+        if(document.getElementById("amount").value == "") {
+            alert("please, input amount");
+            return;
+        }
+
+        url += document.getElementById("amount").value;
+        url += '/';
+
+        var request = new XMLHttpRequest();
+        request.open("GET", url);
+
+        request.onreadystatechange = function () {
+            if (request.readyState == 4 && request.status == 200) {
+                document.getElementById("message").innerText = request.responseText;
+            }
+        };
+
+        request.send();
+    }
+
+    getSelection();
+</script>
+
+</body>
+</html>
