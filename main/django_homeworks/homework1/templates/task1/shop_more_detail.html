@@ -1,16 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Shop more detail</title>
-    <style>
-        td {
-            vertical-align: top;
-        }
-        table, td, th {
-             border: 1px solid black
-        }
-    </style>
+    {% include 'task1/title.html' %}
+    <link rel="stylesheet" type="text/css" href="{% static 'base_style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'table.css' %}">
 </head>
 <body>
     <a href="/shops/{{ object.id }}/edit">edit</a>

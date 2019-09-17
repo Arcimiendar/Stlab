@@ -2,18 +2,25 @@ from django.db.models import Q, F, Sum, Count, Max
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import DetailView, UpdateView, DeleteView, CreateView, ListView
+from django.views.generic import DetailView, UpdateView, DeleteView, CreateView, ListView, FormView, TemplateView
 
 from .models import Shop, Item, Department
+from .forms import CompareForm
 
 
 class ShopsView(View):
     def get(self, request):
-
-        return render(request, "shop.html", context={'shops': Shop.objects.all()})
+        context = {
+            'shops': Shop.objects.all(),
+            'compare': reverse_lazy('compare')
+        }
+        return render(request, "shop.html", context=context)
 
     def post(self, request):
-
+        if 'shop filter' in request.POST:
+            return redirect(f"filter/shop/{request.POST.get('filter')}")
+        if 'item filter' in request.POST:
+            return redirect(f"filter/item/{request.POST.get('filter')}")
         return redirect(f'shops/{request.POST.get("shop")}/')
 
 
@@ -126,7 +133,7 @@ class ShopCreate(CreateView):
     template_name = 'task1/create.html'
 
     def get_success_url(self):
-        return reverse_lazy('shopDetail', args=[self.object.id])
+        return reverse_lazy('shop_detail', args=[self.object.id])
 
 
 class ShopDetailMoreView(DetailView):
@@ -175,14 +182,6 @@ class ShopFilterView(ListView):
         elif self.kwargs['number'] == 2:
             queryset = queryset.filter(departments__items__price__lt=5).distinct()
         elif self.kwargs['number'] == 3:
-            queryset_departments = queryset.annotate(
-                number_departments=Count('departments', distinct=True),
-                sum_departments_staff_amount=Sum("departments__staff_amount")
-            ).order_by('id')
-            queryset_items = queryset.annotate(
-                max_price=Max('departments__items__price'),
-                items_number=Count('departments__items')
-            ).values('max_price', 'id', 'items_number').order_by('id')
 
             queryset = Shop.objects.raw(
                 """
@@ -202,12 +201,89 @@ class ShopFilterView(ListView):
 
         elif self.kwargs['number'] == 4:
             queryset = queryset.annotate(
-                specific_items=Count('departments__items',
-                                     filter=
-                                     Q(departments__items__price__lte=10) | Q(departments__items__name__contains='a'))
+                specific_items=Count(
+                    'departments__items', filter=
+                    Q(departments__items__price__lte=10) | Q(departments__items__name__contains='a'))
             )
 
         return queryset
 
 
+class CompareView(FormView):
 
+    template_name = 'task1/form_view.html'
+    form_class = CompareForm
+    success_url = '/'
+
+    def form_valid(self, form):
+
+        context = {}
+
+        departments = Department.objects.annotate(
+            sum_sold=Sum("items__price", filter=Q(items__is_sold=True)),
+            sum_unsold=Sum("items__price", filter=Q(items__is_sold=False)),
+            sum=Sum("items__price"),
+            number_sold=Count("items__price", filter=Q(items__is_sold=True)),
+            number_unsold=Count("items__price", filter=Q(items__is_sold=False)),
+            number=Count("items__price"),
+        )
+
+        department1 = departments.get(id=form.cleaned_data.get("choice_one"))
+        department2 = departments.get(id=form.cleaned_data.get("choice_two"))
+
+        comparing_names = [
+            'parameters of comparing',
+            department1,
+            department2
+        ]
+
+        if form.cleaned_data.get("number_staff"):
+            context["number_staff"] = [
+                'number staff',
+                department1.staff_amount,
+                department2.staff_amount,
+            ]
+        if form.cleaned_data.get("sum_prices_of_sold_items"):
+            context["sum_prices_of_sold_items"] = [
+                'sum prices of sold items',
+                department1.sum_sold,
+                department2.sum_sold,
+            ]
+        if form.cleaned_data.get("sum_prices_of_unsold_items"):
+            context["sum_prices_of_unsold_items"] = [
+                'sum prices of unsold items',
+                department1.sum_unsold,
+                department2.sum_unsold,
+            ]
+        if form.cleaned_data.get("sum_prices_of__all_items"):
+            context["sum_prices_of_all_items"] = [
+                'sum prices of all items',
+                department1.sum,
+                department2.sum,
+            ]
+        if form.cleaned_data.get("number_prices_of_sold_items"):
+            context["number_prices_of_sold_items"] = [
+                'number prices of sold items',
+                department1.number_sold,
+                department2.number_sold,
+            ]
+        if form.cleaned_data.get("number_prices_of_unsold_items"):
+            context["number_prices_of_unsold_items"] = [
+                'number prices of unsold items',
+                department1.number_unsold,
+                department2.number_unsold,
+            ]
+        if form.cleaned_data.get("number_prices_of_all_items"):
+            context["number_prices_of_sold_all_items"] = [
+                'number prices of all items',
+                department1.number,
+                department2.number,
+            ]
+
+        return render(self.request, "task1/compare_view.html",
+                      context={'data': context, 'comparing_names': comparing_names})
+
+
+class ItemsNotSoldView(TemplateView):
+
+    template_name = 'task1/items_not_sold.html'

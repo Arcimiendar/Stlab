@@ -1,13 +1,16 @@
+{% load url %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>filter result</title>
+    {% include 'task1/title.html' %}
+    <link rel="stylesheet" type="text/css" href="{% static 'base_style.css' %}">
 </head>
 <body>
     <ul>
         {% for item in object_list %}
-            <li>{{ item }}</li>
+            <li>{{ item | url }}</li>
         {% empty %}
             <li>no matching results</li>
         {% endfor %}
