@@ -36,7 +36,7 @@ class ItemUpdate(UpdateView):
     fields = ['name', 'description', 'is_sold', 'price', 'comments', 'department']
 
     def get_success_url(self):
-        return reverse_lazy("shopDetail", args=[self.object.department.shop_id])
+        return reverse_lazy("shop_detail", args=[self.object.department.shop_id])
 
 
 class ItemDelete(DeleteView):
@@ -45,7 +45,7 @@ class ItemDelete(DeleteView):
     template_name = 'task1/delete.html'
 
     def get_success_url(self):
-        return reverse_lazy("shopDetail", args=[self.object.department.shop_id])
+        return reverse_lazy("shop_detail", args=[self.object.department.shop_id])
 
 
 class ItemCreate(CreateView):
@@ -65,7 +65,7 @@ class ItemCreate(CreateView):
         return redirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse_lazy('shopDetail', args=[self.object.department.shop_id])
+        return reverse_lazy('shop_detail', args=[self.object.department.shop_id])
 
 
 class DepartmentUpdate(UpdateView):
@@ -75,7 +75,7 @@ class DepartmentUpdate(UpdateView):
     fields = ['sphere', 'staff_amount', 'shop']
 
     def get_success_url(self):
-        return reverse_lazy("shopDetail", args=[self.object.shop_id])
+        return reverse_lazy("shop_detail", args=[self.object.shop_id])
 
 
 class DepartmentDelete(DeleteView):
@@ -84,7 +84,7 @@ class DepartmentDelete(DeleteView):
     template_name = 'task1/delete.html'
 
     def get_success_url(self):
-        return reverse_lazy("shopDetail", args=[self.object.shop_id])
+        return reverse_lazy("shop_detail", args=[self.object.shop_id])
 
 
 class DepartmentCreate(CreateView):
@@ -104,7 +104,7 @@ class DepartmentCreate(CreateView):
         return redirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse_lazy('shopDetail', args=[self.object.shop_id])
+        return reverse_lazy('shop_detail', args=[self.object.shop_id])
 
 
 class ShopUpdate(UpdateView):
@@ -114,7 +114,7 @@ class ShopUpdate(UpdateView):
     fields = ['name', 'address', 'staff_amount']
 
     def get_success_url(self):
-        return reverse_lazy("shopDetail", args=[self.object.id])
+        return reverse_lazy("shop_detail", args=[self.object.id])
 
 
 class ShopDelete(DeleteView):
